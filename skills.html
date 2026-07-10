@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skills — Rajeshwari Nikam</title>
+<style>
+  :root{
+    --bg:#ffffff;
+    --ink:#111111;
+    --ink-soft:#5c5c58;
+    --ink-faint:#8a8a86;
+    --accent:#6f8fc7;
+    --accent-dark:#4f6fa8;
+    --accent-soft:#eef2f9;
+    --line:rgba(17,17,17,0.12);
+    --dot-off:#e3e6ec;
+    --font-display:'Fraunces', Georgia, serif;
+    --font-body:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono:'Space Mono', monospace;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:var(--bg); color:var(--ink); font-family:var(--font-body); overflow-x:hidden; }
+
+  .rail{
+    position:fixed; left:0; top:0; bottom:0; width:96px;
+    border-right:1px solid var(--line);
+    display:flex; flex-direction:column; align-items:center; justify-content:space-between;
+    padding:40px 0; z-index:20;
+  }
+  .rail .dot-lg{ width:10px; height:10px; border-radius:50%; background:var(--ink); }
+  .rail .status{
+    writing-mode:vertical-rl; transform:rotate(180deg);
+    font-family:var(--font-mono); font-size:11px; letter-spacing:0.18em;
+    color:var(--ink-soft); text-transform:uppercase; white-space:nowrap;
+  }
+  .rail-line{ width:1px; flex:1; background:var(--line); margin:24px 0; }
+
+  .frame{ padding-left:96px; }
+
+  header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:38px 64px 38px 48px; border-bottom:1px solid var(--line);
+  }
+  .logo{ font-family:var(--font-display); font-weight:900; font-size:20px; letter-spacing:0.04em; text-decoration:none; color:var(--ink); }
+  nav ul{ list-style:none; display:flex; gap:44px; }
+  nav a{ color:var(--ink); text-decoration:none; font-size:13px; font-weight:600; letter-spacing:0.12em; position:relative; padding-bottom:4px; }
+  nav a.active{ border-bottom:2px solid var(--ink); }
+  nav a::after{ content:''; position:absolute; left:0; bottom:-2px; width:0%; height:2px; background:var(--accent-dark); transition:width .3s ease; }
+  nav a:hover::after{ width:100%; }
+  .menu-dot{ width:14px; height:14px; border-radius:50%; background:var(--ink); }
+  .menu-btn{ display:none; background:none; border:none; cursor:pointer; padding:6px; }
+  .menu-btn span{ display:block; width:22px; height:2px; background:var(--ink); margin:5px 0; transition:transform .3s ease, opacity .3s ease; }
+  .menu-btn.open span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+  .menu-btn.open span:nth-child(2){ opacity:0; }
+  .menu-btn.open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+  .mobile-nav{
+    display:none;
+    max-height:0;
+    overflow:hidden;
+    background:var(--bg);
+    border-bottom:1px solid var(--line);
+    transition:max-height .35s ease;
+  }
+  .mobile-nav.open{ max-height:280px; }
+  .mobile-nav ul{ list-style:none; padding:8px 24px 20px; }
+  .mobile-nav li{ border-top:1px solid var(--line); }
+  .mobile-nav li:first-child{ border-top:none; }
+  .mobile-nav a{
+    display:block; padding:16px 4px; color:var(--ink); text-decoration:none;
+    font-size:14px; font-weight:600; letter-spacing:0.1em;
+  }
+  .mobile-nav a.active{ color:var(--accent-dark); }
+
+  main{ padding:64px 64px 0 48px; }
+
+  .top-grid{
+    display:grid; grid-template-columns: 0.85fr 1.15fr; gap:60px;
+    padding-bottom:56px;
+  }
+
+  .eyebrow{ font-family:var(--font-mono); font-size:12px; letter-spacing:0.2em; font-weight:700; color:var(--accent-dark); margin-bottom:16px; }
+  h1{ font-family:var(--font-display); font-weight:900; font-size:clamp(38px,4.6vw,54px); line-height:1.08; letter-spacing:-0.01em; }
+  .divider{ width:52px; height:2px; background:var(--ink); margin:24px 0 20px; }
+  .lead p{ font-size:16.5px; line-height:1.75; color:var(--ink-soft); max-width:430px; }
+
+  .best-head{ display:flex; align-items:center; gap:18px; margin-bottom:30px; }
+  .best-head h4{ font-family:var(--font-mono); font-size:12px; letter-spacing:0.16em; white-space:nowrap; }
+  .best-head .hr{ height:1px; background:var(--line); flex:1; }
+
+  .best-grid{ display:grid; grid-template-columns:1fr 1fr; column-gap:48px; row-gap:0; }
+  .best-item{ padding:26px 0; }
+  .best-grid .best-item:nth-child(1),
+  .best-grid .best-item:nth-child(2){ border-bottom:1px solid var(--line); }
+  .best-item .num{ font-family:var(--font-display); font-weight:900; font-size:34px; color:var(--accent); margin-bottom:10px; }
+  .best-item h5{ font-size:14.5px; font-weight:700; letter-spacing:0.03em; margin-bottom:10px; text-transform:uppercase; }
+  .best-item p{ font-size:14.5px; line-height:1.65; color:var(--ink-soft); max-width:300px; }
+
+  .tech-head{ display:flex; align-items:center; gap:18px; margin-bottom:38px; }
+  .tech-head h4{ font-family:var(--font-mono); font-size:12px; letter-spacing:0.16em; white-space:nowrap; }
+  .tech-head .hr{ height:1px; background:var(--line); flex:1; }
+
+  .tech-grid{
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:36px;
+    padding-bottom:56px;
+  }
+  .tech-col h6{ font-family:var(--font-mono); font-size:11.5px; letter-spacing:0.16em; color:var(--accent-dark); margin-bottom:22px; }
+  .skill-row{ display:flex; align-items:center; justify-content:space-between; padding:10px 0; }
+  .skill-row + .skill-row{ border-top:1px solid rgba(17,17,17,0.06); }
+  .skill-name{ font-size:14.5px; font-weight:500; }
+  .dots{ display:inline-flex; gap:6px; flex-shrink:0; margin-left:16px; }
+  .dot{ width:8px; height:8px; border-radius:50%; background:var(--dot-off); }
+  .dot.on{ background:var(--accent); }
+  .dot.half{ background:linear-gradient(90deg, var(--accent) 50%, var(--dot-off) 50%); }
+
+  .cta-bar{
+    background:var(--accent-soft);
+    border-radius:6px;
+    padding:34px 40px;
+    margin-bottom:64px;
+    display:grid;
+    grid-template-columns: 1.1fr 1fr auto;
+    align-items:center;
+    gap:32px;
+  }
+  .cta-bar .line1{ border-left:3px solid var(--accent); padding-left:20px; }
+  .cta-bar .line1 p{ font-size:15px; font-weight:600; line-height:1.5; }
+  .cta-bar .line2 p{ font-size:13.5px; color:var(--ink-soft); margin-bottom:6px; }
+  .cta-bar .tags{ font-size:13.5px; font-weight:600; color:var(--accent-dark); }
+  .cta-bar .tags span.sep{ color:var(--ink-faint); margin:0 6px; font-weight:400; }
+  .cta-link{
+    display:inline-flex; align-items:center; gap:10px; font-weight:700; font-size:13px;
+    letter-spacing:0.08em; text-decoration:none; color:var(--ink);
+    border-bottom:2px solid var(--ink); padding-bottom:5px; white-space:nowrap;
+  }
+  .cta-link svg{ transition:transform .3s ease; }
+  .cta-link:hover svg{ transform:translate(3px,-3px); }
+
+  @media (max-width: 980px){
+    .frame{ padding-left:0; }
+    .rail{ display:none; }
+    header{ padding:24px 24px; }
+    nav{ display:none; }
+    .menu-btn{ display:block; }
+    .mobile-nav{ display:block; }
+    main{ padding:40px 24px 0; }
+    .top-grid{ grid-template-columns:1fr; gap:32px; padding-bottom:40px; }
+    .best-grid{ grid-template-columns:1fr; }
+    .best-grid .best-item{ border-bottom:1px solid var(--line) !important; }
+    .best-grid .best-item:last-child{ border-bottom:none !important; }
+    .tech-grid{ grid-template-columns:1fr 1fr; gap:32px 24px; }
+    .cta-bar{ grid-template-columns:1fr; text-align:left; padding:28px; }
+    .cta-bar .line1{ margin-bottom:6px; }
+  }
+
+  @media (max-width: 560px){
+    .tech-grid{ grid-template-columns:1fr; gap:0; }
+    .skill-row{ padding:12px 0; }
+  }
+
+  @media (max-width: 420px){
+    header{ padding:20px 16px; }
+    .logo{ font-size:16px; }
+    main{ padding:32px 16px 0; }
+    .top-grid{ gap:28px; padding-bottom:32px; }
+    h1{ font-size:clamp(30px, 8.5vw, 38px); }
+    .lead p{ font-size:15px; }
+    .best-head, .tech-head{ gap:12px; margin-bottom:22px; }
+    .best-head h4, .tech-head h4{ font-size:11px; }
+    .best-item{ padding:20px 0; }
+    .best-item .num{ font-size:28px; }
+    .cta-bar{ padding:22px 18px; margin-bottom:40px; }
+    .cta-bar .tags{ display:flex; flex-wrap:wrap; gap:4px 0; }
+    .dots{ margin-left:10px; }
+    .dot{ width:7px; height:7px; }
+  }
+
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--accent-dark); outline-offset:3px; }
+</style>
+</head>
+<body>
+
+<div class="rail">
+  <div class="dot-lg"></div>
+  <div class="rail-line"></div>
+  <div class="status">AVAILABLE FOR NEW OPPORTUNITIES</div>
+  <div class="rail-line"></div>
+</div>
+
+<div class="frame">
+
+  <header>
+    <a class="logo" href="index.html">RAJESHWARI NIKAM</a>
+    <nav>
+      <ul>
+        <li><a href="work.html">WORK</a></li>
+        <li><a href="about.html">ABOUT</a></li>
+        <li><a href="skills.html" class="active">SKILLS</a></li>
+        <li><a href="contact.html">CONTACT</a></li>
+      </ul>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileNav">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="mobile-nav" id="mobileNav">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="work.html">WORK</a></li>
+      <li><a href="about.html">ABOUT</a></li>
+      <li><a href="skills.html" class="active">SKILLS</a></li>
+      <li><a href="contact.html">CONTACT</a></li>
+    </ul>
+  </div>
+
+  <main>
+    <div class="top-grid">
+      <div>
+        <div class="eyebrow">MY SKILLS</div>
+        <h1>The skills behind meaningful design.</h1>
+        <div class="divider"></div>
+        <div class="lead">
+          <p>A blend of creative thinking, user empathy and technical craft to build simple, intuitive and impactful digital products.</p>
+        </div>
+      </div>
+
+      <div>
+        <div class="best-head">
+          <h4>WHAT I DO BEST</h4>
+          <div class="hr"></div>
+        </div>
+        <div class="best-grid">
+          <div class="best-item">
+            <div class="num">01</div>
+            <h5>User-Centered Design</h5>
+            <p>I design with empathy and data to create experiences people actually enjoy using.</p>
+          </div>
+          <div class="best-item">
+            <div class="num">02</div>
+            <h5>Problem Solving</h5>
+            <p>I turn complex, messy requirements into simple, effective interface solutions.</p>
+          </div>
+          <div class="best-item">
+            <div class="num">03</div>
+            <h5>Visual Communication</h5>
+            <p>I use typography, layout and hierarchy to communicate clearly and beautifully.</p>
+          </div>
+          <div class="best-item">
+            <div class="num">04</div>
+            <h5>Frontend Development</h5>
+            <p>I bring my own designs to life in code, so nothing gets lost in handoff.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-head">
+      <h4>TECHNICAL SKILLS</h4>
+      <div class="hr"></div>
+    </div>
+
+    <div class="tech-grid">
+      <div class="tech-col">
+        <h6>DESIGN</h6>
+        <div class="skill-row"><span class="skill-name">Figma</span><span class="dots"><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot half"></i></span></div>
+        <div class="skill-row"><span class="skill-name">Adobe XD</span><span class="dots"><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot half"></i><i class="dot"></i></span></div>
+        <div class="skill-row"><span class="skill-name">Sketch</span><span class="dots"><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot"></i><i class="dot"></i></span></div>
+        <div class="skill-row"><span class="skill-name">Photoshop</span><span class="dots"><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot half"></i><i class="dot"></i></span></div>
+      </div>
+
+      <div class="tech-col">
+        <h6>UX</h6>
+        <div class="skill-row"><span class="skill-name">User Research</span><span class="dots"><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot"></i></span></div>
+        <div class="skill-row"><span class="skill-name">Wireframing</span><span class="dots"><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot half"></i><i class="dot"></i></span></div>
+        <div class="skill-row"><span class="skill-name">Prototyping</span><span class="dots"><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot half"></i><i class="dot"></i></span></div>
+        <div class="skill-row"><span class="skill-name">Usability Testing</span><span class="dots"><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot"></i><i class="dot"></i></span></div>
+        <div class="skill-row"><span class="skill-name">Information Architecture</span><span class="dots"><i class="dot on"></i><i class="dot on"></i><i class="dot half"></i><i class="dot"></i><i class="dot"></i></span></div>
+      </div>
+
+      <div class="tech-col">
+        <h6>UI</h6>
+        <div class="skill-row"><span class="skill-name">Visual Design</span><span class="dots"><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot half"></i></span></div>
+        <div class="skill-row"><span class="skill-name">Design Systems</span><span class="dots"><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot"></i></span></div>
+        <div class="skill-row"><span class="skill-name">Typography</span><span class="dots"><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot half"></i><i class="dot"></i></span></div>
+        <div class="skill-row"><span class="skill-name">Layout Design</span><span class="dots"><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot"></i></span></div>
+        <div class="skill-row"><span class="skill-name">Responsive Design</span><span class="dots"><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot half"></i></span></div>
+      </div>
+
+      <div class="tech-col">
+        <h6>TOOLS</h6>
+        <div class="skill-row"><span class="skill-name">VS Code</span><span class="dots"><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot"></i></span></div>
+        <div class="skill-row"><span class="skill-name">GitHub</span><span class="dots"><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot half"></i><i class="dot"></i></span></div>
+        <div class="skill-row"><span class="skill-name">Notion</span><span class="dots"><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot"></i></span></div>
+        <div class="skill-row"><span class="skill-name">FigJam</span><span class="dots"><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot"></i><i class="dot"></i></span></div>
+        <div class="skill-row"><span class="skill-name">Slack</span><span class="dots"><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot"></i></span></div>
+      </div>
+    </div>
+
+    <div class="cta-bar">
+      <div class="line1">
+        <p>I'm always learning and exploring new ways to create better experiences.</p>
+      </div>
+      <div class="line2">
+        <p>Currently exploring:</p>
+        <div class="tags">Interaction Design<span class="sep">•</span>Motion Design<span class="sep">•</span>AI in Design</div>
+      </div>
+      <a class="cta-link" href="contact.html">LET'S WORK TOGETHER
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H5M12 4V11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </main>
+
+</div>
+
+<script>
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  menuBtn.addEventListener('click', () => {
+    const isOpen = mobileNav.classList.toggle('open');
+    menuBtn.classList.toggle('open', isOpen);
+    menuBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  mobileNav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileNav.classList.remove('open');
+      menuBtn.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+
+</body>
+</html>

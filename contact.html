@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Rajeshwari Nikam</title>
+<style>
+  :root{
+    --bg:#ffffff;
+    --ink:#111111;
+    --ink-soft:#5c5c58;
+    --ink-faint:#8a8a86;
+    --accent:#6f8fc7;
+    --accent-dark:#4f6fa8;
+    --accent-soft:#eef2f9;
+    --line:rgba(17,17,17,0.12);
+    --font-display:'Fraunces', Georgia, serif;
+    --font-body:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono:'Space Mono', monospace;
+    --primary-svg-color: var(--accent);
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:var(--bg); color:var(--ink); font-family:var(--font-body); overflow-x:hidden; }
+
+  .rail{
+    position:fixed; left:0; top:0; bottom:0; width:96px;
+    border-right:1px solid var(--line);
+    display:flex; flex-direction:column; align-items:center; justify-content:space-between;
+    padding:40px 0; z-index:20;
+  }
+  .rail .dot-lg{ width:10px; height:10px; border-radius:50%; background:var(--ink); }
+  .rail .status{
+    writing-mode:vertical-rl; transform:rotate(180deg);
+    font-family:var(--font-mono); font-size:11px; letter-spacing:0.18em;
+    color:var(--ink-soft); text-transform:uppercase; white-space:nowrap;
+  }
+  .rail-line{ width:1px; flex:1; background:var(--line); margin:24px 0; }
+
+  .frame{ padding-left:96px; }
+
+  header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:38px 64px 38px 48px; border-bottom:1px solid var(--line);
+  }
+  .logo{ font-family:var(--font-display); font-weight:900; font-size:20px; letter-spacing:0.04em; text-decoration:none; color:var(--ink); }
+  nav ul{ list-style:none; display:flex; gap:44px; }
+  nav a{ color:var(--ink); text-decoration:none; font-size:13px; font-weight:600; letter-spacing:0.12em; position:relative; padding-bottom:4px; }
+  nav a.active{ border-bottom:2px solid var(--ink); }
+  nav a::after{ content:''; position:absolute; left:0; bottom:-2px; width:0%; height:2px; background:var(--accent-dark); transition:width .3s ease; }
+  nav a:hover::after{ width:100%; }
+  .menu-btn{ display:none; background:none; border:none; cursor:pointer; padding:6px; }
+  .menu-btn span{ display:block; width:22px; height:2px; background:var(--ink); margin:5px 0; transition:transform .3s ease, opacity .3s ease; }
+  .menu-btn.open span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+  .menu-btn.open span:nth-child(2){ opacity:0; }
+  .menu-btn.open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+  .mobile-nav{
+    display:none; max-height:0; overflow:hidden;
+    background:var(--bg); border-bottom:1px solid var(--line);
+    transition:max-height .35s ease;
+  }
+  .mobile-nav.open{ max-height:280px; }
+  .mobile-nav ul{ list-style:none; padding:8px 24px 20px; }
+  .mobile-nav li{ border-top:1px solid var(--line); }
+  .mobile-nav li:first-child{ border-top:none; }
+  .mobile-nav a{ display:block; padding:16px 4px; color:var(--ink); text-decoration:none; font-size:14px; font-weight:600; letter-spacing:0.1em; }
+  .mobile-nav a.active{ color:var(--accent-dark); }
+
+  main{ padding:64px 64px 0 48px; }
+
+  .contact-grid{
+    display:grid;
+    grid-template-columns: 1fr 0.85fr;
+    gap:48px;
+    align-items:center;
+    min-height:calc(100vh - 260px);
+    padding-bottom:56px;
+  }
+
+  .eyebrow{ font-family:var(--font-mono); font-size:12px; letter-spacing:0.2em; font-weight:700; color:var(--accent-dark); margin-bottom:18px; }
+  h1{ font-family:var(--font-display); font-weight:900; font-size:clamp(36px,4.4vw,52px); line-height:1.08; letter-spacing:-0.01em; margin-bottom:22px; }
+  .divider{ width:52px; height:2px; background:var(--ink); margin-bottom:22px; }
+  .lead p{ font-size:15.5px; line-height:1.7; color:var(--ink-soft); max-width:420px; margin-bottom:40px; }
+
+  .info-rows{ display:flex; flex-direction:column; gap:22px; margin-bottom:42px; }
+  .info-row{ display:flex; align-items:center; gap:16px; }
+  .info-icon{
+    width:48px; height:48px; border-radius:50%; background:var(--accent-soft);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .info-text .label{ font-size:11px; font-weight:700; letter-spacing:0.08em; color:var(--ink-faint); margin-bottom:4px; text-transform:uppercase; }
+  .info-text .value{ font-size:14.5px; font-weight:600; }
+  .info-text a.value{ color:var(--ink); text-decoration:none; border-bottom:1.5px solid var(--accent); padding-bottom:1px; }
+  .info-text a.value:hover{ color:var(--accent-dark); }
+
+  .connect-label{ font-size:11.5px; font-weight:700; letter-spacing:0.08em; margin-bottom:14px; }
+  .connect-links{ display:flex; flex-wrap:wrap; gap:12px 0; font-size:14px; }
+  .connect-links a{ color:var(--ink); text-decoration:none; padding:0 16px; border-right:1px solid var(--line); }
+  .connect-links a:first-child{ padding-left:0; }
+  .connect-links a:last-child{ border-right:none; }
+  .connect-links a:hover{ color:var(--accent-dark); }
+
+.illus-col{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.contact-image{
+    width:100%;
+    max-width:450px;
+    height:auto;
+    object-fit:contain;
+    animation:illus-float 5s ease-in-out infinite;
+    display:block;
+    user-select:none;
+    pointer-events:none;
+}
+
+@keyframes illus-float{
+    0%,100%{
+        transform:translateY(0);
+    }
+    50%{
+        transform:translateY(-10px);
+    }
+}
+
+@media (max-width:980px){
+
+.contact-image{
+    max-width:320px;
+}
+
+}
+
+@media (max-width:480px){
+
+.contact-image{
+    max-width:240px;
+}
+
+}
+
+  .bottom-bar{
+    background:var(--accent-soft);
+    border-radius:6px;
+    padding:32px 40px;
+    margin:0 0 64px;
+    display:grid;
+    grid-template-columns: auto 1.1fr 1fr;
+    align-items:center;
+    gap:28px;
+  }
+  .badge-round{
+    width:44px; height:44px; border-radius:50%; background:#dfe7f5;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .bottom-bar .line1{ border-left:3px solid var(--accent); padding-left:20px; }
+  .bottom-bar .line1 p{ font-size:14.5px; color:var(--ink-soft); line-height:1.5; }
+  .bottom-bar .line1 strong{ display:block; font-weight:700; color:var(--ink); margin-top:2px; }
+  .bottom-bar .line2 h6{ font-family:var(--font-mono); font-size:11px; letter-spacing:0.14em; color:var(--accent-dark); margin-bottom:8px; }
+  .bottom-bar .line2 p{ font-size:13.5px; color:var(--ink-soft); line-height:1.6; }
+
+  @media (max-width: 980px){
+    .frame{ padding-left:0; }
+    .rail{ display:none; }
+    header{ padding:24px 24px; }
+    nav{ display:none; }
+    .menu-btn{ display:block; }
+    .mobile-nav{ display:block; }
+    main{ padding:40px 24px 0; }
+    .contact-grid{ grid-template-columns:1fr; gap:32px; min-height:auto; padding-bottom:40px; }
+    .illus-col{ order:-1; }
+    .illus-col svg{ max-width:280px; }
+    .bottom-bar{ grid-template-columns:1fr; text-align:left; padding:26px; gap:14px; }
+    .badge-round{ display:none; }
+  }
+
+  @media (max-width: 480px){
+    header{ padding:20px 16px; }
+    .logo{ font-size:16px; }
+    main{ padding:32px 16px 0; }
+    .connect-links a{ padding:0 10px; }
+    .info-row{ gap:12px; }
+    .info-icon{ width:42px; height:42px; }
+    .illus-col svg{ max-width:220px; }
+  }
+
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--accent-dark); outline-offset:3px; }
+</style>
+</head>
+<body>
+
+<div class="rail">
+  <div class="dot-lg"></div>
+  <div class="rail-line"></div>
+  <div class="status">AVAILABLE FOR NEW OPPORTUNITIES</div>
+  <div class="rail-line"></div>
+</div>
+
+<div class="frame">
+
+  <header>
+    <a class="logo" href="index.html">RAJESHWARI NIKAM</a>
+    <nav>
+      <ul>
+        <li><a href="work.html">WORK</a></li>
+        <li><a href="about.html">ABOUT</a></li>
+        <li><a href="skills.html">SKILLS</a></li>
+        <li><a href="contact.html" class="active">CONTACT</a></li>
+      </ul>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileNav">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="mobile-nav" id="mobileNav">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="work.html">WORK</a></li>
+      <li><a href="about.html">ABOUT</a></li>
+      <li><a href="skills.html">SKILLS</a></li>
+      <li><a href="contact.html" class="active">CONTACT</a></li>
+    </ul>
+  </div>
+
+  <main>
+    <div class="contact-grid">
+      <div>
+        <div class="eyebrow">GET IN TOUCH</div>
+        <h1>Let's create something great together.</h1>
+        <div class="divider"></div>
+        <div class="lead">
+          <p>Have a project in mind or just want to say hi? I'd love to hear from you.</p>
+        </div>
+
+        <div class="info-rows">
+          <div class="info-row">
+            <div class="info-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 5h16a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V6a1 1 0 011-1z" stroke="var(--accent-dark)" stroke-width="1.6"/><path d="M3.5 6.5L12 13l8.5-6.5" stroke="var(--accent-dark)" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </div>
+            <div class="info-text">
+              <div class="label">Email</div>
+              <a class="value" href="mailto:hello@rajeshwarinikam.com">Click here to email me &rarr;</a>
+            </div>
+          </div>
+
+          <div class="info-row">
+            <div class="info-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--accent-dark)" stroke-width="1.6"/><path d="M12 7v5l3.5 2" stroke="var(--accent-dark)" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </div>
+            <div class="info-text">
+              <div class="label">Availability</div>
+              <div class="value">Open to internships &amp; freelance work</div>
+            </div>
+          </div>
+
+          <div class="info-row">
+            <div class="info-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 22s7-7.58 7-12.5A7 7 0 105 9.5C5 14.42 12 22 12 22z" stroke="var(--accent-dark)" stroke-width="1.6"/><circle cx="12" cy="9.5" r="2.4" stroke="var(--accent-dark)" stroke-width="1.6"/></svg>
+            </div>
+            <div class="info-text">
+              <div class="label">Location</div>
+              <div class="value">Pune, India&nbsp; &bull;&nbsp; Available worldwide (remote)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="connect-label">LET'S CONNECT</div>
+        <div class="connect-links">
+          <a href="#" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://www.behance.net/rajeshwarinikam" target="_blank" rel="noopener">Behance</a>
+          <a href="#" target="_blank" rel="noopener">Dribbble</a>
+          <a href="#" target="_blank" rel="noopener">Instagram</a>
+        </div>
+      </div>
+
+      <div class="illus-col">
+    <img
+        src="./about_image.png"
+        alt="UI UX Designer"
+        class="contact-image">
+</div>
+
+    <div class="bottom-bar">
+      <div class="badge-round">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 11l18-8-8 18-2-8-8-2z" stroke="var(--accent-dark)" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="line1">
+        <p>I usually reply within 24 hours.<strong>Let's make it happen!</strong></p>
+      </div>
+      <div class="line2">
+        <h6>THANK YOU!</h6>
+        <p>I appreciate you taking the time to reach out. Looking forward to connecting with you.</p>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<script>
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  menuBtn.addEventListener('click', () => {
+    const isOpen = mobileNav.classList.toggle('open');
+    menuBtn.classList.toggle('open', isOpen);
+    menuBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  mobileNav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileNav.classList.remove('open');
+      menuBtn.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+
+</body>
+</html>

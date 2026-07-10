@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work — Rajeshwari Nikam</title>
+<style>
+  :root{
+    --bg:#ffffff;
+    --ink:#111111;
+    --ink-soft:#5c5c58;
+    --ink-faint:#8a8a86;
+    --accent:#6f8fc7;
+    --accent-dark:#4f6fa8;
+    --accent-soft:#eef2f9;
+    --line:rgba(17,17,17,0.12);
+    --font-display:'Fraunces', Georgia, serif;
+    --font-body:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono:'Space Mono', monospace;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:var(--bg); color:var(--ink); font-family:var(--font-body); overflow-x:hidden; }
+
+  .rail{
+    position:fixed; left:0; top:0; bottom:0; width:96px;
+    border-right:1px solid var(--line);
+    display:flex; flex-direction:column; align-items:center; justify-content:space-between;
+    padding:40px 0; z-index:20;
+  }
+  .rail .dot-lg{ width:10px; height:10px; border-radius:50%; background:var(--ink); }
+  .rail .status{
+    writing-mode:vertical-rl; transform:rotate(180deg);
+    font-family:var(--font-mono); font-size:11px; letter-spacing:0.18em;
+    color:var(--ink-soft); text-transform:uppercase; white-space:nowrap;
+  }
+  .rail-line{ width:1px; flex:1; background:var(--line); margin:24px 0; }
+
+  .frame{ padding-left:96px; }
+
+  header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:38px 64px 38px 48px; border-bottom:1px solid var(--line);
+  }
+  .logo{ font-family:var(--font-display); font-weight:900; font-size:20px; letter-spacing:0.04em; text-decoration:none; color:var(--ink); }
+  nav ul{ list-style:none; display:flex; gap:44px; }
+  nav a{ color:var(--ink); text-decoration:none; font-size:13px; font-weight:600; letter-spacing:0.12em; position:relative; padding-bottom:4px; }
+  nav a.active{ border-bottom:2px solid var(--ink); }
+  nav a::after{ content:''; position:absolute; left:0; bottom:-2px; width:0%; height:2px; background:var(--accent-dark); transition:width .3s ease; }
+  nav a:hover::after{ width:100%; }
+  .menu-btn{ display:none; background:none; border:none; cursor:pointer; padding:6px; }
+  .menu-btn span{ display:block; width:22px; height:2px; background:var(--ink); margin:5px 0; transition:transform .3s ease, opacity .3s ease; }
+  .menu-btn.open span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+  .menu-btn.open span:nth-child(2){ opacity:0; }
+  .menu-btn.open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+  .mobile-nav{
+    display:none; max-height:0; overflow:hidden;
+    background:var(--bg); border-bottom:1px solid var(--line);
+    transition:max-height .35s ease;
+  }
+  .mobile-nav.open{ max-height:280px; }
+  .mobile-nav ul{ list-style:none; padding:8px 24px 20px; }
+  .mobile-nav li{ border-top:1px solid var(--line); }
+  .mobile-nav li:first-child{ border-top:none; }
+  .mobile-nav a{ display:block; padding:16px 4px; color:var(--ink); text-decoration:none; font-size:14px; font-weight:600; letter-spacing:0.1em; }
+  .mobile-nav a.active{ color:var(--accent-dark); }
+
+  main{ padding:64px 64px 0 48px; }
+
+  .top-row{
+    display:grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap:32px;
+    align-items:start;
+    padding-bottom:44px;
+  }
+
+  .eyebrow{ font-family:var(--font-mono); font-size:12px; letter-spacing:0.2em; font-weight:700; color:var(--accent-dark); margin-bottom:16px; }
+  h1{ font-family:var(--font-display); font-weight:900; font-size:clamp(36px,4.4vw,52px); line-height:1.08; letter-spacing:-0.01em; }
+
+  .top-desc p{ font-size:15px; line-height:1.75; color:var(--ink-soft); max-width:340px; padding-top:6px; }
+
+  .view-all{
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+    text-decoration:none; color:var(--ink);
+  }
+  .view-all .label{
+    font-family:var(--font-mono); font-size:9.5px; letter-spacing:0.14em;
+    transform: rotate(0deg);
+  }
+  .view-all-circle{
+    width:64px; height:64px; border-radius:50%; border:1.5px solid var(--ink);
+    display:flex; align-items:center; justify-content:center;
+    transition:background .3s ease;
+  }
+  .view-all:hover .view-all-circle{ background:var(--ink); }
+  .view-all:hover .view-all-circle svg path{ stroke:#fff; }
+  .view-all-circle svg path{ transition:stroke .3s ease; }
+
+  .filter-row{
+    display:flex; align-items:center; gap:34px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:18px; margin-bottom:36px;
+    flex-wrap:wrap;
+  }
+  .filter-tabs{ display:flex; gap:34px; flex-wrap:wrap; flex:1; }
+  .filter-tab{
+    background:none; border:none; cursor:pointer;
+    font-family:var(--font-body); font-size:13px; font-weight:600; letter-spacing:0.04em;
+    color:var(--ink-faint); padding:0 0 4px; position:relative;
+  }
+  .filter-tab.active{ color:var(--ink); }
+  .filter-tab.active::after{
+    content:''; position:absolute; left:0; right:0; bottom:-19px; height:2px; background:var(--ink);
+  }
+  .sort-label{
+    font-family:var(--font-mono); font-size:12px; font-weight:700; letter-spacing:0.08em;
+    display:flex; align-items:center; gap:6px; white-space:nowrap;
+  }
+  /* ===========================================
+   BENTO GRID
+=========================================== */
+
+.work-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    grid-auto-rows:230px;
+    gap:24px;
+    padding-bottom:60px;
+}
+
+/* Remove side-grid layout */
+.side-grid{
+    display:contents;
+}
+
+/* ---------- Cards ---------- */
+
+.feature-card,
+.mini-card{
+    position:relative;
+    overflow:hidden;
+    border-radius:12px;
+    border:1px solid var(--line);
+    background:var(--accent-soft);
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    text-decoration:none;
+    color:var(--ink);
+    transition:.35s ease;
+}
+
+.feature-card:hover,
+.mini-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 24px 55px rgba(0,0,0,.08);
+}
+
+/* ---------- Bento Sizes ---------- */
+
+.feature-card{
+    grid-column:span 2;
+    grid-row:span 2;
+}
+
+.side-grid .mini-card:nth-child(1){
+    grid-column:span 2;
+}
+
+.side-grid .mini-card:nth-child(2){
+    grid-column:span 1;
+}
+
+.side-grid .mini-card:nth-child(3){
+    grid-row:span 2;
+}
+
+.side-grid .mini-card:nth-child(4){
+    grid-column:span 1;
+}
+
+.side-grid .mini-card:nth-child(5){
+    grid-column:span 2;
+}
+
+.side-grid .mini-card:nth-child(6){
+    grid-column:span 1;
+}
+
+.side-grid .mini-card:nth-child(7){
+    grid-column:span 1;
+}
+
+/* ---------- Background ---------- */
+
+.card-bg{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items: center;
+    justify-content:center;
+    overflow:hidden;
+    background:var(--accent-soft);
+}
+.card-bg::after{
+    content:'';
+    position:absolute;
+    inset:0;
+
+    background:linear-gradient(
+        180deg,
+        rgba(255,255,255,.20),
+        rgba(255,255,255,.45),
+        rgba(255,255,255,.88)
+    );
+}
+
+/* Huge Typography */
+.bg-word{
+    position:absolute;
+    inset:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    font-family:var(--font-display);
+    font-weight:900;
+    line-height:.9;
+    letter-spacing:-0.04em;
+    text-align:center;
+    text-transform:uppercase;
+
+    color:rgba(17,17,17,.10);
+
+    user-select:none;
+    pointer-events:none;
+
+    transition:all .35s ease;
+
+    white-space:normal;
+    word-break:break-word;
+    overflow-wrap:break-word;
+}
+
+.feature-card .bg-word{
+    font-size:clamp(3.5rem,5vw,5rem);
+}
+
+.feature-card:hover .bg-word,
+.mini-card:hover .bg-word{
+    transform:translate(-50%, -50%) scale(1.08);
+    color:rgba(17,17,17,.18);
+}
+
+/* ---------- Top ---------- */
+
+.feature-card:hover .bg-word,
+.mini-card:hover .bg-word{
+    transform:scale(1.05);
+    color:rgba(17,17,17,.16);
+}
+.feature-card{
+    grid-column:span 2;
+    grid-row:span 2;
+}
+
+.wide-card{
+    grid-column:span 2;
+}
+
+.tall-card{
+    grid-row:span 2;
+}
+.mini-card .bg-word{
+    font-size:clamp(1.4rem,2vw,2.1rem);
+}
+.wide-card .bg-word{
+    font-size:clamp(2rem,2.8vw,2.8rem);
+}
+.tall-card .bg-word{
+    font-size:clamp(1.8rem,2.3vw,2.5rem);
+}
+.feature-card .card-top{
+    padding:28px;
+}
+
+.mini-card .card-top{
+    padding:22px;
+}
+
+.card-num{
+    font-family:var(--font-mono);
+    color:var(--ink-soft);
+}
+
+.feature-card .card-arrow,
+.mini-card .mini-arrow{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:rgba(255,255,255,.75);
+    border:1px solid var(--line);
+}
+
+.feature-card .card-arrow:hover{
+    background:#111;
+}
+
+.feature-card .card-arrow:hover svg path{
+    stroke:#fff;
+}
+
+/* ---------- Bottom ---------- */
+
+.feature-card .card-bottom,
+.mini-card .card-bottom{
+    position:relative;
+    z-index:2;
+}
+
+.feature-card .card-bottom{
+    padding:30px;
+}
+
+.mini-card .card-bottom{
+    padding:22px;
+}
+
+.feature-card h3{
+    font-family:var(--font-display);
+    font-size:34px;
+    margin-bottom:10px;
+}
+
+.mini-card h4{
+    font-family:var(--font-display);
+    font-size:22px;
+    margin-bottom:8px;
+}
+
+.card-desc{
+    color:var(--ink-soft);
+    line-height:1.6;
+    margin-bottom:16px;
+}
+
+.card-tags{
+    font-family:var(--font-mono);
+    font-size:10px;
+    color:var(--ink-faint);
+    letter-spacing:.08em;
+}
+
+.case-link{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin-top:20px;
+    text-decoration:none;
+    color:var(--ink);
+    font-weight:600;
+}
+
+.case-link svg{
+    transition:.3s;
+}
+
+.case-link:hover svg{
+    transform:translate(4px,-4px);
+}
+
+/* Hide */
+
+.hidden-card{
+    display:none!important;
+}
+
+/* ---------- Responsive ---------- */
+
+@media(max-width:1100px){
+
+.work-grid{
+grid-template-columns:repeat(2,1fr);
+grid-auto-rows:220px;
+}
+
+.feature-card{
+grid-column:span 2;
+grid-row:span 2;
+}
+
+.side-grid .mini-card{
+grid-column:span 1 !important;
+grid-row:span 1 !important;
+}
+
+.side-grid .mini-card:nth-child(1),
+.side-grid .mini-card:nth-child(5){
+grid-column:span 2 !important;
+}
+
+}
+
+/* ===========================
+   MOBILE LAYOUT
+=========================== */
+
+@media (max-width:768px){
+
+    .work-grid{
+        display:grid;
+        grid-template-columns:1fr;
+        gap:18px;
+    }
+
+    .side-grid{
+        display:contents;
+    }
+
+    .feature-card,
+    .mini-card{
+        grid-column:auto !important;
+        grid-row:auto !important;
+
+        width:100%;
+        min-height:220px;
+        height:220px;
+
+        border-radius:16px;
+    }
+
+    .feature-card .bg-word,
+    .mini-card .bg-word{
+        font-size:2rem;
+        top:38%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        opacity:.10;
+    }
+
+    .feature-card .card-top,
+    .mini-card .card-top{
+        padding:18px;
+    }
+
+    .feature-card .card-bottom,
+    .mini-card .card-bottom{
+        padding:18px;
+    }
+
+    .feature-card h3,
+    .mini-card h4{
+        font-size:1.4rem;
+        margin-bottom:8px;
+    }
+
+    .feature-card .card-desc,
+    .mini-card .card-desc{
+        font-size:14px;
+        line-height:1.5;
+        margin-bottom:10px;
+        max-width:100%;
+    }
+
+    .card-tags{
+        font-size:10px;
+        margin-bottom:0;
+    }
+
+}
+
+  .bottom-bar{
+    background:var(--accent-soft);
+    border-radius:6px;
+    padding:32px 40px;
+    margin:0 0 64px;
+    display:grid;
+    grid-template-columns: auto 1.1fr 1fr auto;
+    align-items:center;
+    gap:28px;
+  }
+  .badge-round{
+    width:44px; height:44px; border-radius:50%; background:#dfe7f5;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .bottom-bar .line1{ border-left:3px solid var(--accent); padding-left:20px; }
+  .bottom-bar .line1 p{ font-size:15px; font-weight:600; line-height:1.5; }
+  .bottom-bar .line1 em{ font-style:italic; font-weight:500; color:var(--accent-dark); }
+  .bottom-bar .line2 h6{ font-family:var(--font-mono); font-size:11px; letter-spacing:0.14em; color:var(--accent-dark); margin-bottom:8px; }
+  .bottom-bar .line2 p{ font-size:13.5px; color:var(--ink-soft); line-height:1.6; }
+  .cta-link{
+    display:inline-flex; align-items:center; gap:10px; font-weight:700; font-size:13px;
+    letter-spacing:0.08em; text-decoration:none; color:var(--ink);
+    border-bottom:2px solid var(--ink); padding-bottom:5px; white-space:nowrap;
+  }
+  .cta-link svg{ transition:transform .3s ease; }
+  .cta-link:hover svg{ transform:translate(3px,-3px); }
+
+  @media (max-width: 980px){
+    .frame{ padding-left:0; }
+    .rail{ display:none; }
+    header{ padding:24px 24px; }
+    nav{ display:none; }
+    .menu-btn{ display:block; }
+    .mobile-nav{ display:block; }
+    main{ padding:40px 24px 0; }
+    .top-row{ grid-template-columns:1fr; gap:20px; padding-bottom:32px; }
+    .view-all{ flex-direction:row; justify-content:flex-start; gap:14px; }
+    .work-grid{ grid-template-columns:1fr; }
+    .side-grid{ grid-template-columns:1fr 1fr; }
+    .feature-card{ min-height:460px; }
+  }
+
+ @media (max-width:768px){
+
+    /* Work Grid */
+    .work-grid{
+        display:flex;
+        flex-direction:column;
+        gap:18px;
+    }
+
+    .side-grid{
+        display:contents;
+    }
+
+    /* Reset all card sizes */
+    .feature-card,
+    .mini-card,
+    .wide-card,
+    .tall-card{
+        width:100%;
+        height:220px;
+        min-height:220px;
+        max-height:220px;
+
+        grid-column:auto !important;
+        grid-row:auto !important;
+    }
+
+    /* Card content */
+    .feature-card .card-top,
+    .mini-card .card-top{
+        padding:18px;
+    }
+
+    .feature-card .card-bottom,
+    .mini-card .card-bottom{
+        padding:18px;
+    }
+
+    .feature-card h3,
+    .mini-card h4{
+        font-size:24px;
+    }
+
+    .feature-card .card-desc,
+    .mini-card .card-desc{
+        font-size:14px;
+        max-width:100%;
+    }
+
+    /* Background text */
+    .bg-word{
+        font-size:32px !important;
+        top:35%;
+        left:50%;
+        transform:translate(-50%,-50%);
+    }
+
+    /* Existing mobile styles */
+    .filter-row{
+        gap:20px 24px;
+    }
+
+    .filter-tabs{
+        gap:20px 24px;
+    }
+
+    .bottom-bar{
+        grid-template-columns:1fr;
+        text-align:left;
+        padding:26px;
+        gap:16px;
+    }
+
+    .badge-round{
+        display:none;
+    }
+
+    .bottom-bar .line1{
+        margin-bottom:4px;
+    }
+
+}
+@media (max-width:640px){
+
+.mini-card{
+    min-height:170px;
+}
+
+.feature-card{
+    min-height:250px;
+}
+
+}
+@media (max-width:640px){
+
+.mini-card{
+    min-height:170px;
+}
+
+.feature-card{
+    min-height:250px;
+}
+
+}
+  @media (max-width: 420px){
+    header{ padding:20px 16px; }
+    .logo{ font-size:16px; }
+    main{ padding:32px 16px 0; }
+    .feature-card{ min-height:380px; }
+    .feature-card h3{ font-size:24px; }
+    .mini-card{ min-height:230px; }
+  }
+
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--accent-dark); outline-offset:3px; }
+</style>
+</head>
+<body>
+
+<div class="rail">
+  <div class="dot-lg"></div>
+  <div class="rail-line"></div>
+  <div class="status">AVAILABLE FOR NEW OPPORTUNITIES</div>
+  <div class="rail-line"></div>
+</div>
+
+<div class="frame">
+
+  <header>
+    <a class="logo" href="index.html">RAJESHWARI NIKAM</a>
+    <nav>
+      <ul>
+        <li><a href="work.html" class="active">WORK</a></li>
+        <li><a href="about.html">ABOUT</a></li>
+        <li><a href="skills.html">SKILLS</a></li>
+        <li><a href="contact.html">CONTACT</a></li>
+      </ul>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileNav">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="mobile-nav" id="mobileNav">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="work.html" class="active">WORK</a></li>
+      <li><a href="about.html">ABOUT</a></li>
+      <li><a href="skills.html">SKILLS</a></li>
+      <li><a href="contact.html">CONTACT</a></li>
+    </ul>
+  </div>
+
+  <main>
+    <div class="top-row">
+      <div>
+        <div class="eyebrow">MY WORK</div>
+        <h1>Designing clarity.<br>Delivering impact.</h1>
+      </div>
+      <div class="top-desc">
+        <p>A selection of projects where research, interface design and code come together to solve real problems.</p>
+      </div>
+      <a class="view-all" href="https://www.behance.net/rajeshwarinikam" target="_blank" rel="noopener">
+        <span class="label">VIEW ALL PROJECTS</span>
+        <span class="view-all-circle">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H5M12 4V11" stroke="#111111" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </a>
+    </div>
+
+    <div class="filter-row">
+      <div class="filter-tabs" id="filterTabs">
+        <button class="filter-tab active" data-filter="all">ALL</button>
+        <button class="filter-tab" data-filter="ui-ux">UI/UX DESIGN</button>
+        <button class="filter-tab" data-filter="web">WEB DESIGN</button>
+        <button class="filter-tab" data-filter="branding">BRANDING</button>
+        <button class="filter-tab" data-filter="product">PRODUCT DESIGN</button>
+      </div>
+      <div class="sort-label">LATEST <span>↓</span></div>
+    </div>
+
+    <div class="work-grid">
+      <!-- Feature project -->
+      <a class="feature-card" data-cat="ui-ux" href="https://www.behance.net/gallery/245062763/FlowDesk-Project-Management-SaaS-Platform" target="_blank" rel="noopener" style="text-decoration:none;">
+        <div class="card-bg">
+          <div class="bg-word">FLOWDESK</div>
+      </div>
+        <div class="card-top">
+          <span class="card-num">01</span>
+          <span class="card-arrow">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H5M12 4V11" stroke="#111111" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+        <div class="card-bottom">
+          <h3>FlowDesk</h3>
+          <p class="card-desc">A clean SaaS dashboard that helps teams manage projects without the clutter.</p>
+          <div class="card-tags">UI/UX DESIGN&nbsp;&nbsp;•&nbsp;&nbsp;DASHBOARD</div>
+        </div>
+      </a>
+
+      <div class="side-grid" id="sideGrid">
+
+        <a class="mini-card wide-card" data-cat="product" href="https://www.behance.net/gallery/246132887/Product-Advertising-and-Branding-Design-Showcase" target="_blank" rel="noopener">
+<div class="card-bg">
+    <div class="bg-word">Product Ads Branding</div>
+</div>          <div class="card-top">
+            <span class="card-num">02</span>
+            <span class="mini-arrow">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H5M12 4V11" stroke="#111111" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+          <div class="card-bottom">
+            <h4>Product Ads &amp; Branding</h4>
+            <p class="card-desc">A showcase of product ads and branding built to sell the story, not just the product.</p>
+            <div class="card-tags">BRANDING&nbsp;•&nbsp;PRODUCT DESIGN</div>
+          </div>
+        </a>
+
+        <a class="mini-card wide-card" data-cat="branding" href="https://www.behance.net/gallery/242701155/LOGOSTUDIO" target="_blank" rel="noopener">
+          <div class="card-bg">
+    <div class="bg-word">Logo Studio</div>
+</div> 
+          <div class="card-top">
+            <span class="card-num">03</span>
+            <span class="mini-arrow">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H5M12 4V11" stroke="#111111" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+          <div class="card-bottom">
+            <h4>LOGOSTUDIO</h4>
+            <p class="card-desc">A collection of logo concepts built around simple, memorable marks.</p>
+            <div class="card-tags">BRANDING&nbsp;•&nbsp;LOGO DESIGN</div>
+          </div>
+        </a>
+
+        <a class="mini-card tall-card" data-cat="ui-ux" href="https://www.behance.net/gallery/242671707/Triplinx-App-UI-Case-Study" target="_blank" rel="noopener">
+         <div class="card-bg">
+    <div class="bg-word">Triplinx UI</div>
+</div> 
+          <div class="card-top">
+            <span class="card-num">04</span>
+            <span class="mini-arrow">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H5M12 4V11" stroke="#111111" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+          <div class="card-bottom">
+            <h4>Triplinx — UI</h4>
+            <p class="card-desc">A travel booking app interface designed for effortless trip planning.</p>
+            <div class="card-tags">UI/UX DESIGN&nbsp;•&nbsp;MOBILE APP</div>
+          </div>
+        </a>
+
+        <a class="mini-card wide-card" data-cat="ui-ux" href="https://www.behance.net/gallery/242671387/Triplinx-UX-Case-Study" target="_blank" rel="noopener">
+          <div class="card-bg">
+    <div class="bg-word">Triplinx - UX</div>
+</div> 
+          <div class="card-top">
+            <span class="card-num">05</span>
+            <span class="mini-arrow">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H5M12 4V11" stroke="#111111" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+          <div class="card-bottom">
+            <h4>Triplinx — UX</h4>
+            <p class="card-desc">The research and flows behind Triplinx — turning trip chaos into clarity.</p>
+            <div class="card-tags">UI/UX DESIGN&nbsp;•&nbsp;CASE STUDY</div>
+          </div>
+        </a>
+
+        <a class="mini-card tall-card" data-cat="web" href="https://www.behance.net/gallery/242528739/AllRecipes-Website-Redesign-UI-UX-Case-Study" target="_blank" rel="noopener">
+          <div class="card-bg">
+    <div class="bg-word">All Recipes Design</div>
+</div> 
+          <div class="card-top">
+            <span class="card-num">06</span>
+            <span class="mini-arrow">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H5M12 4V11" stroke="#111111" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+          <div class="card-bottom">
+            <h4>AllRecipes Redesign</h4>
+            <p class="card-desc">A modern redesign of AllRecipes focused on faster recipe discovery.</p>
+            <div class="card-tags">WEB DESIGN&nbsp;•&nbsp;UI/UX DESIGN</div>
+          </div>
+        </a>
+
+        <a class="mini-card wide-card" data-cat="ui-ux" href="https://www.behance.net/gallery/242528253/AudioTree-UI-Case-Study-Challenge" target="_blank" rel="noopener">
+           <div class="card-bg">
+    <div class="bg-word">Audio Tree</div>
+</div> 
+          <div class="card-top">
+            <span class="card-num">07</span>
+            <span class="mini-arrow">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H5M12 4V11" stroke="#111111" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+          <div class="card-bottom">
+            <h4>AudioTree</h4>
+            <p class="card-desc">A music streaming concept exploring bold, rhythm-driven UI.</p>
+            <div class="card-tags">UI/UX DESIGN&nbsp;•&nbsp;MUSIC APP</div>
+          </div>
+        </a>
+
+        <a class="mini-card wide-card" data-cat="web" href="https://www.behance.net/gallery/242526949/Aditya-Birla-Homepage-Redesign-UX-Case-Study" target="_blank" rel="noopener">
+            <div class="card-bg">
+    <div class="bg-word">Aditya Birla Redesign</div>
+</div> 
+          <div class="card-top">
+            <span class="card-num">08</span>
+            <span class="mini-arrow">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H5M12 4V11" stroke="#111111" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+          <div class="card-bottom">
+            <h4>Aditya Birla Redesign</h4>
+            <p class="card-desc">A homepage redesign concept balancing corporate scale with clarity.</p>
+            <div class="card-tags">WEB DESIGN&nbsp;•&nbsp;UI/UX DESIGN</div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+    <div class="bottom-bar" id="contact">
+      <div class="badge-round">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3 L14 10 L21 12 L14 14 L12 21 L10 14 L3 12 L10 10 Z" fill="var(--accent-dark)"/></svg>
+      </div>
+      <div class="line1">
+        <p>Every project starts with a question and ends with a solution <em>that matters</em>.</p>
+      </div>
+      <div class="line2">
+        <h6>HAVE A PROJECT IN MIND?</h6>
+        <p>Let's build something great together.</p>
+      </div>
+      <a class="cta-link" href="mailto:hello@rajeshwarinikam.com">LET'S WORK TOGETHER
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H5M12 4V11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </main>
+
+</div>
+
+<script>
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  menuBtn.addEventListener('click', () => {
+    const isOpen = mobileNav.classList.toggle('open');
+    menuBtn.classList.toggle('open', isOpen);
+    menuBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  mobileNav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileNav.classList.remove('open');
+      menuBtn.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  const tabs = document.querySelectorAll('.filter-tab');
+  const featureCard = document.querySelector('.feature-card');
+  const miniCards = document.querySelectorAll('.mini-card');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const filter = tab.dataset.filter;
+
+      const allCards = [featureCard, ...miniCards];
+      allCards.forEach(card => {
+        const cat = card.dataset.cat;
+        const show = filter === 'all' || cat === filter;
+        card.classList.toggle('hidden-card', !show);
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
